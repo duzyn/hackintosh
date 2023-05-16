@@ -1,4 +1,30 @@
-# hackintosh
+# OMEN 暗影精灵 2 的 OpenCore 配置
+
+- [OMEN 暗影精灵 2 的 OpenCore 配置](#omen-暗影精灵-2-的-opencore-配置)
+  - [初识黑苹果](#初识黑苹果)
+  - [原则](#原则)
+  - [总体步骤](#总体步骤)
+  - [了解硬件](#了解硬件)
+  - [前期准备](#前期准备)
+  - [替换无线网卡](#替换无线网卡)
+  - [制作系统安装盘](#制作系统安装盘)
+  - [安装 OpenCore](#安装-opencore)
+  - [安装内核扩展](#安装内核扩展)
+  - [ACPI 补丁](#acpi-补丁)
+  - [配置 OpenCore](#配置-opencore)
+  - [设置 BIOS](#设置-bios)
+  - [配置声音](#配置声音)
+  - [配置 USB 映射](#配置-usb-映射)
+  - [配置 CPU 频率管理](#配置-cpu-频率管理)
+  - [配置电池状态显示](#配置电池状态显示)
+  - [无需 USB 启动](#无需-usb-启动)
+  - [升级 macOS、OpenCore、内核扩展](#升级-macosopencore内核扩展)
+  - [遗留问题](#遗留问题)
+  - [日常使用设置](#日常使用设置)
+    - [把 PrtSC 键映射为 F13 键](#把-prtsc-键映射为-f13-键)
+    - [双系统](#双系统)
+
+![neofetch 截图](neofetch-screenshot.png)
 
 ## 初识黑苹果
 
@@ -49,9 +75,7 @@ Windows 上可以使用 AIDA64 或 [HWinfo](https://www.hwinfo.com/download/)（
 
 先用 Scoop 下载安装 Ventoy：
 
-```powershell
-scoop install ventoy
-```
+    scoop install scoop-cn/ventoy
 
 运行 Ventoy2Disk，选中 U 盘，取消勾选“安全启动支持”，分区类型选择 GPT，分区设置中在磁盘最后保留一段空间，写 16GB。这个 16GB 的空间我们用来放 macOS 的安装盘。然后将空闲的 16GB 空间格式化为 FAT32 格式，盘符为 INSTALLER，这并不是最后要用的格式，但是不格式化的话，在 macOS 的磁盘工具中看不到这个分区。U 盘的 Ventoy 盘分区选 FAT32，后续用来放 WePE、Windows 或 Linux 的 ISO 文件。
 
@@ -74,7 +98,7 @@ mist download installer 12.6.2 application
 
 下载完成后，会在 /Users/Shared/Mist 目录下得到一个 app 格式的安装包。然后使用 Apple 官方的 createinstallmedia 工具刻录到 U 盘。createinstallmedia 这个工具就在系统安装包里面，可以参考下方的地址找到后，把文件拖到终端中来输入路径。
 
-```
+```bash
 sudo "/Users/Shared/Mist/Install macOS Monterey 12.6.2-21G320.app/Contents/Resources/createinstallmedia" --volume /Volumes/INSTALLER/ 
 ```
 
