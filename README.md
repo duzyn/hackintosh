@@ -75,55 +75,72 @@ Windows 上可以使用 AIDA64 或 [HWinfo](https://www.hwinfo.com/download/)（
 
 先用 Scoop 下载安装 Ventoy：
 
-    scoop install scoop-cn/ventoy
+```powershell
+scoop bucket add scoop-cn https://ghproxy.com/github.com/duzyn/scoop-cn
+scoop install scoop-cn/ventoy
+```
 
-运行 Ventoy2Disk，选中 U 盘，取消勾选“安全启动支持”，分区类型选择 GPT，分区设置中在磁盘最后保留一段空间，写 16GB。这个 16GB 的空间我们用来放 macOS 的安装盘。然后将空闲的 16GB 空间格式化为 FAT32 格式，盘符为 INSTALLER，这并不是最后要用的格式，但是不格式化的话，在 macOS 的磁盘工具中看不到这个分区。U 盘的 Ventoy 盘分区选 FAT32，后续用来放 WePE、Windows 或 Linux 的 ISO 文件。
+运行 Ventoy2Disk，选中 U 盘，分区类型选择 GPT，分区设置中在磁盘最后保留一段空间，写 16GB。这个 16GB 的空间我们用来放 macOS 的安装盘。然后将空闲的 16GB 空间格式化为 FAT32 格式，盘符为 INSTALLER，这并不是最后要用的格式，但是不格式化的话，在 macOS 的磁盘工具中看不到这个分区。U 盘的 Ventoy 盘分区选 FAT32，后续用来放 WePE、Windows 或 Linux 的 ISO 文件。
 
 分区后的硬盘可见的分区为：
 
-- Ventoy：FAT32，约 14GB
-- VTOYEFI：ESP 分区，32MB
-- INSTALLER：FAT32，16GB
+- VENTOY：FAT32 格式，约 14GB
+- VTOYEFI：ESP 分区，FAT16 格式，32MB
+- INSTALLER：FAT32 格式，16GB
 
-下载 macOS 安装包，需要进到 macOS，运行下方的命令，再按提示下载对应版本的的系统安装包。如果没有 macOS 可以有两种办法，一是[在 Windows 下载恢复盘，启动恢复盘在线安装](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/windows-install.html)。二是在 Windows 上安装虚拟机跑 macOS，做 U 盘系统安装包。
+下载 macOS 安装包，需要进到 macOS，运行下方的命令，再按提示下载对应版本的的系统安装包。如果没有 macOS 可以有两种办法，一是 [在 Windows 下载恢复盘，启动恢复盘在线安装](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/windows-install.html)。二是在 Windows 上安装虚拟机跑 macOS，做 U 盘系统安装包。
 
-这里我们使用了 [mist-cli](https://github.com/ninxsoft/mist-cli) 来下载 macOS 安装包。
+这里我们使用 [mist](https://github.com/ninxsoft/mist) 来下载 macOS 安装包。
 
 ```bash
-brew install mist
-mist download installer 12.6.2 application
+brew tap --custom-remote --force-auto-update duzyn/cn https://ghproxy.com/github.com/duzyn/homebrew-cn
+brew install duzyn/cn/mist
 ```
+
+运行 Mist，然后选择对应的 Installer 下载，保存为 Application 格式，保存到 Mist 文件夹。
 
 在下载的过程中，此时把 16GB 的分区准备好。打开磁盘工具，把 16GB 的分区格式化为“Mac OS 扩展（日志式）”（即 HFS+）。
 
-下载完成后，会在 /Users/Shared/Mist 目录下得到一个 app 格式的安装包。然后使用 Apple 官方的 createinstallmedia 工具刻录到 U 盘。createinstallmedia 这个工具就在系统安装包里面，可以参考下方的地址找到后，把文件拖到终端中来输入路径。
+下载完成后，会在 ～/Mist 目录下得到一个 app 格式的安装包。然后使用 Apple 官方的 createinstallmedia 工具刻录到 U 盘。createinstallmedia 这个工具就在系统安装包里面，可以参考下方的地址找到后，把文件拖到终端中来输入路径。
 
 ```bash
-sudo "/Users/Shared/Mist/Install macOS Monterey 12.6.2-21G320.app/Contents/Resources/createinstallmedia" --volume /Volumes/INSTALLER/ 
+sudo "~/Mist/Install macOS Monterey 12.6.5_21G531.app/Contents/Resources/createinstallmedia" --volume /Volumes/INSTALLER/ 
 ```
 
 另一种方法是使用 [installinstallmacos.py](https://github.com/munki/macadmin-scripts) 来下载 DMG 格式的安装包。
 
-```
+```bash
 mkdir -p ~/macOS-installer && cd ~/macOS-installer && curl https://ghproxy.com/raw.githubusercontent.com/munki/macadmin-scripts/main/installinstallmacos.py > installinstallmacos.py && sudo python3 installinstallmacos.py 
 ```
 
 然后按提示选择 macOS 版本，等待下载完成。下载完成后打开 DMG 包，再使用和上述类似的方法用 createinstallmedia 工具刻录到 U 盘。
 
-耐心等待安装完成。将电脑上已有的 EFI/OC 拷贝到 VTOYEFI 的 EFI 路径下去。因为 Ventoy 的 ESP 分区只有 32MB，所以非必需的文件需要删除掉，例如 Tools, Resources 目录。BOOT 目录不需要，因为 Ventoy 已经有相应的 boot.efi 了。Ventoy 的 /EFI/BOOT 目录下不用的 EFI，如 MIPS、ARM 的可以删掉，为 OpenCore 腾出空间。
+耐心等待安装完成。将电脑上已有的 EFI 文件夹拷贝到 VENTOY 的根目录下去。因为 VTOYEFI 分区只有 32MB，放不下 OpenCore 的文件，所以不适合放那个分区。
 
-接下来配置从 Ventoy 链式启动 OpenCore。打开 Ventoy 盘，建立文件夹 ventoy，然后新建一个文件为 ventoy_grub.cfg，输入以下内容：
+接下来配置从 Ventoy 链式启动 OpenCore。打开 VENTOY 盘，建立文件夹 ventoy，然后新建一个文件为 ventoy_grub.cfg，输入以下内容：
 
 ```
 menuentry "OpenCore" --class=custom {
   insmod part_gpt
   insmod chain
-  set root=${vtoy_efi_part}
+  set root=${vtoy_iso_part}
   chainloader /EFI/OC/OpenCore.efi
 }
 ```
 
-Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_grubmenu.html)，上述的 `${vtoy_efi_part}` 是内置变量，指的是 VTOYEFI 分区，因为 OpenCore 的 efi 文件也是放在 VTOYEFI 分区下，所以在这个分区下找对应的文件。
+Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_grubmenu.html)，上述的 `${vtoy_iso_part}` 是内置变量，指的是放 ISO 所在的分区，因为 OpenCore 的 ISO 文件也是放在 VENTOY 分区下，所以在这个分区下找对应的文件。
+
+目录结构如下：
+
+```
+/Volumes/VENTOY
+├── EFI
+├── ISO
+│   └── WePE64_V2.2.iso
+└── ventoy
+    ├── ventoy.json
+    └── ventoy_grub.cfg
+```
 
 ## 安装 OpenCore
 
