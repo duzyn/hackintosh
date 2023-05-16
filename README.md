@@ -61,7 +61,7 @@ scoop install ventoy
 - VTOYEFI：ESP 分区，32MB
 - INSTALLER：FAT32，16GB
 
-下载 macOS 安装包，需要进到 macOS，运行下方的命令，再按提示下载对应版本的的系统安装包。如果没有 macOS 可以有两种办法，一是在 Windows 下载恢复盘，启动恢复盘在线安装。二是在 Windows 上安装虚拟机跑 macOS，做 U 盘系统安装包。
+下载 macOS 安装包，需要进到 macOS，运行下方的命令，再按提示下载对应版本的的系统安装包。如果没有 macOS 可以有两种办法，一是[在 Windows 下载恢复盘，启动恢复盘在线安装](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/windows-install.html)。二是在 Windows 上安装虚拟机跑 macOS，做 U 盘系统安装包。
 
 这里我们使用了 [mist-cli](https://github.com/ninxsoft/mist-cli) 来下载 macOS 安装包。
 
@@ -123,7 +123,7 @@ Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_gru
 - [BrightnessKeys.kext](https://github.com/acidanthera/BrightnessKeys)：修复屏幕亮度调节的快捷键。
 - [CPUFriend.kext](https://github.com/acidanthera/CPUFriend)：CPU 功耗管理，在装机完后再做，后文有说明。
 - CPUFriendDataProvider.kext：配合 CPUFriend 用，在装机完后再做，后文有说明。使用 [one-key-cpufriend](https://github.com/stevezhengshiqi/one-key-cpufriend) 来生成。
-- FeatureUnlock.kext：解锁不支持的特性
+- [FeatureUnlock.kext](https://github.com/acidanthera/FeatureUnlock)：解锁不支持的特性
 - [HibernationFixup.kext](https://github.com/acidanthera/HibernationFixup)：睡眠修复。
 - [Lilu.kext](https://github.com/acidanthera/Lilu)：各其他内核扩展基本都是 Lilu 的插件，所以这个是必需。
 - [NVMeFix.kext](https://github.com/acidanthera/NVMeFix)：固态硬盘的补丁。
@@ -149,7 +149,7 @@ Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_gru
 - [SSDT-EC-USBX-LAPTOP.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-EC-USBX-LAPTOP.aml)：EC、USB 供电补丁。
 - [SSDT-PLUG-DRTNIA.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-PLUG-DRTNIA.aml)：CPU 补丁。
 - [SSDT-PNLF.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-PNLF.aml)：调节显示器亮度补丁。
-- SSDT-RMCF-PS2Map.aml：将 PrtSc 键映射为 F13 键
+- SSDT-RMCF-PS2Map.aml：将 PrtSc 键映射为 F13 键，见下文。
 - [SSDT-XOSI.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-XOSI.aml)：使 Windows 下的功能在 macOS 也可用。
 
 ACPI 补丁只需要够用就行，不需要装些不必需的。上述 ACPI 补丁都是必需的。
