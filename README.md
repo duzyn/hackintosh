@@ -1,30 +1,49 @@
+<!-- omit in toc -->
 # OMEN 暗影精灵 2 的 OpenCore 配置
 
-- [OMEN 暗影精灵 2 的 OpenCore 配置](#omen-暗影精灵-2-的-opencore-配置)
-  - [初识黑苹果](#初识黑苹果)
-  - [原则](#原则)
-  - [总体步骤](#总体步骤)
-  - [了解硬件](#了解硬件)
-  - [前期准备](#前期准备)
-  - [替换无线网卡](#替换无线网卡)
-  - [制作系统安装盘](#制作系统安装盘)
-  - [安装 OpenCore](#安装-opencore)
-  - [安装内核扩展](#安装内核扩展)
-  - [ACPI 补丁](#acpi-补丁)
-  - [配置 OpenCore](#配置-opencore)
-  - [设置 BIOS](#设置-bios)
-  - [配置声音](#配置声音)
-  - [配置 USB 映射](#配置-usb-映射)
-  - [配置 CPU 频率管理](#配置-cpu-频率管理)
-  - [配置电池状态显示](#配置电池状态显示)
-  - [无需 USB 启动](#无需-usb-启动)
-  - [升级 macOS、OpenCore、内核扩展](#升级-macosopencore内核扩展)
-  - [遗留问题](#遗留问题)
-  - [日常使用设置](#日常使用设置)
-    - [把 PrtSC 键映射为 F13 键](#把-prtsc-键映射为-f13-键)
-    - [双系统](#双系统)
+- [初识黑苹果](#初识黑苹果)
+- [原则](#原则)
+- [总体步骤](#总体步骤)
+- [了解硬件](#了解硬件)
+- [前期准备](#前期准备)
+- [替换无线网卡](#替换无线网卡)
+- [制作系统安装盘](#制作系统安装盘)
+- [安装 OpenCore](#安装-opencore)
+- [安装内核扩展](#安装内核扩展)
+- [ACPI 补丁](#acpi-补丁)
+- [配置 OpenCore](#配置-opencore)
+- [设置 BIOS](#设置-bios)
+- [配置图形界面](#配置图形界面)
+- [配置声音](#配置声音)
+- [配置 USB 映射](#配置-usb-映射)
+- [配置 CPU 频率管理](#配置-cpu-频率管理)
+- [配置电池状态显示](#配置电池状态显示)
+- [无需 USB 启动](#无需-usb-启动)
+- [升级 macOS、OpenCore、内核扩展](#升级-macosopencore内核扩展)
+- [遗留问题](#遗留问题)
+- [日常使用设置](#日常使用设置)
+  - [把 PrtSC 键映射为 F13 键](#把-prtsc-键映射为-f13-键)
+  - [双系统](#双系统)
 
-![neofetch 截图](neofetch-screenshot.png)
+```
+                    'c.           
+                 ,xNMM.          OS: macOS 12.6.7 21G651 x86_64 
+               .OMMMMo           Host: Hackintosh (SMBIOS: MacBookPro13,3) 
+               OMMM0,            Kernel: 21.6.0 
+     .;loddo:' loolloddol;.      Uptime: 6 mins 
+   cKMMMMMMMMMMNWMMMMMMMMMM0:    Packages: 158 (brew) 
+ .KMMMMMMMMMMMMMMMMMMMMMMMWd.    Shell: zsh 5.8.1 
+ XMMMMMMMMMMMMMMMMMMMMMMMX.      Resolution: 1920x1080@2x 
+;MMMMMMMMMMMMMMMMMMMMMMMM:       DE: Aqua 
+:MMMMMMMMMMMMMMMMMMMMMMMM:       WM: Quartz Compositor 
+.MMMMMMMMMMMMMMMMMMMMMMMMX.      WM Theme: Blue (Dark) 
+ kMMMMMMMMMMMMMMMMMMMMMMMMWd.    Terminal: Apple_Terminal 
+ .XMMMMMMMMMMMMMMMMMMMMMMMMMMk   Terminal Font: SFMono-Regular 
+  .XMMMMMMMMMMMMMMMMMMMMMMMMK.   CPU: Intel i7-6700HQ (8) @ 2.60GHz 
+    kMMMMMMMMMMMMMMMMMMMMMMd     GPU: Intel HD Graphics 530 
+     ;KMMMMMMMWXXWMMMMMMMk.      Memory: 6103MiB / 16384MiB 
+       .cooc,.    .,coo:.
+```
 
 ## 初识黑苹果
 
@@ -150,7 +169,7 @@ Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_gru
 
 - BOOT/BOOTx64.efi：必需的基础组件
 - OC/OpenCore.efi：必需的基础组件
-- OC/Drivers/HfsPlus.efi：OpenCore 自带的驱动中缺少 HFS+ 磁盘格式驱动，可以下载  [HfsPlus.efi](https://ghproxy.com/github.com/acidanthera/OcBinaryData/raw/master/Drivers/HfsPlus.efi)
+- OC/Drivers/HfsPlus.efi：OpenCore 自带的驱动中缺少 HFS+ 磁盘格式驱动，可以下载 [HfsPlus.efi](https://ghproxy.com/github.com/acidanthera/OcBinaryData/raw/master/Drivers/HfsPlus.efi)
 - OC/Drivers/OpenRuntime.efi：必需的基础组件
 - OC/Drivers/Ps2KeyboardDxe.efi：笔记本内置键盘的驱动
 - OC/Drivers/Ps2MouseDxe.efi：笔记本内置鼠标的驱动
@@ -199,8 +218,6 @@ ACPI 补丁只需要够用就行，不需要装些不必需的。上述 ACPI 补
 
 [按照教程配置 OpenCore](https://dortania.github.io/OpenCore-Install-Guide/config.plist/)。再按照 [SkyLake CPU 笔记本教程](https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/skylake.html) 来配置剩下的部分。
 
-不需要配置 GUI 选择启动盘，在 U 盘上只是装机、更新系统、更新 OpenCore、测试等情形时用，没有 GUI 也不影响使用。在电脑上一般使用时也不需要显示 GUI 页面，也不需要配置开机声音。
-
 按照 [教程相应部分](https://dortania.github.io/OpenCore-Post-Install/cosmetic/verbose.html) 在电脑上的 config.plist 中设置几项隐藏启动时的调试信息：
 
 - boot-args 中去掉 -v
@@ -226,6 +243,10 @@ ACPI 补丁只需要够用就行，不需要装些不必需的。上述 ACPI 补
 - 关闭安全启动
 - 关闭快速启动
 - 关闭管理员密码
+
+## 配置图形界面
+
+按 [教程相应部分](https://dortania.github.io/OpenCore-Post-Install/universal/audio.html) 设置。
 
 ## 配置声音
 
@@ -310,6 +331,5 @@ ACPI 补丁只需要够用就行，不需要装些不必需的。上述 ACPI 补
 以管理员运行以下命令修改注册表：
 
 ```cmd
-Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation ^
-  /v RealTimeIsUniversal /t REG_DWORD /d 1
+Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d 1
 ```
