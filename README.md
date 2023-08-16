@@ -27,7 +27,7 @@
 
 ```
                     'c.           
-                 ,xNMM.          OS: macOS 12.6.7 21G651 x86_64 
+                 ,xNMM.          OS: macOS 12.6.8 21G725 x86_64 
                .OMMMMo           Host: Hackintosh (SMBIOS: MacBookPro13,3) 
                OMMM0,            Kernel: 21.6.0 
      .;loddo:' loolloddol;.      Uptime: 6 mins 
