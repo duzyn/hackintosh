@@ -27,15 +27,15 @@
 
 ```
                     'c.           
-                 ,xNMM.          OS: macOS 12.6.8 21G725 x86_64 
+                 ,xNMM.          OS: macOS 12.7 21G816 x86_64 
                .OMMMMo           Host: Hackintosh (SMBIOS: MacBookPro13,3) 
                OMMM0,            Kernel: 21.6.0 
-     .;loddo:' loolloddol;.      Uptime: 6 mins 
-   cKMMMMMMMMMMNWMMMMMMMMMM0:    Packages: 158 (brew) 
+     .;loddo:' loolloddol;.      Uptime: 1 mins 
+   cKMMMMMMMMMMNWMMMMMMMMMM0:    Packages: 1 (brew) 
  .KMMMMMMMMMMMMMMMMMMMMMMMWd.    Shell: zsh 5.8.1 
  XMMMMMMMMMMMMMMMMMMMMMMMX.      Resolution: 1920x1080@2x 
 ;MMMMMMMMMMMMMMMMMMMMMMMM:       DE: Aqua 
-:MMMMMMMMMMMMMMMMMMMMMMMM:       WM: Quartz Compositor 
+:MMMMMMMMMMMMMMMMMMMMMMMM:       WM: Rectangle 
 .MMMMMMMMMMMMMMMMMMMMMMMMX.      WM Theme: Blue (Dark) 
  kMMMMMMMMMMMMMMMMMMMMMMMMWd.    Terminal: Apple_Terminal 
  .XMMMMMMMMMMMMMMMMMMMMMMMMMMk   Terminal Font: SFMono-Regular 
@@ -170,6 +170,7 @@ Ventoy 支持 [使用 Grub2 来启动其他 OS](https://ventoy.net/cn/plugin_gru
 - BOOT/BOOTx64.efi：必需的基础组件
 - OC/OpenCore.efi：必需的基础组件
 - OC/Drivers/HfsPlus.efi：OpenCore 自带的驱动中缺少 HFS+ 磁盘格式驱动，可以下载 [HfsPlus.efi](https://ghproxy.com/github.com/acidanthera/OcBinaryData/raw/master/Drivers/HfsPlus.efi)
+- OC/Drivers/OpenCanopy.efi：GUI 必需
 - OC/Drivers/OpenRuntime.efi：必需的基础组件
 - OC/Drivers/Ps2KeyboardDxe.efi：笔记本内置键盘的驱动
 - OC/Drivers/Ps2MouseDxe.efi：笔记本内置鼠标的驱动
