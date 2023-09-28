@@ -247,7 +247,7 @@ ACPI 补丁只需要够用就行，不需要装些不必需的。上述 ACPI 补
 
 ## 配置图形界面
 
-按 [教程相应部分](https://dortania.github.io/OpenCore-Post-Install/universal/audio.html) 设置。
+按 [教程相应部分](https://dortania.github.io/OpenCore-Post-Install/cosmetic/gui.html) 设置。
 
 ## 配置声音
 
